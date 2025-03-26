@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 
-function NewProductForm() {
+function NewProductForm({currentData, setDataForm}) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [supplier, setSupplier] = useState('');
   const [image, setImage] = useState(null);
+
+
+  const [form, setForm] = useState(currentData);
 
   const categories = ['Eletrônicos', 'Vestuário', 'Alimentos', 'Livros', 'Outros'];
   const suppliers = ['Fornecedor A', 'Fornecedor B', 'Fornecedor C', 'Fornecedor D'];
@@ -14,6 +17,7 @@ function NewProductForm() {
     const file = event.target.files[0];
     if (file) {
       setImage(URL.createObjectURL(file));
+      setForm({...form, image: image})
     }
   };
 
@@ -21,6 +25,7 @@ function NewProductForm() {
     event.preventDefault();
     // Aqui você pode adicionar a lógica para enviar os dados do formulário
     console.log({ name, description, category, supplier, image });
+    setDataForm(form)
   };
 
   return (
@@ -36,9 +41,10 @@ function NewProductForm() {
             <input
               type="text"
               id="name"
+              name='name'
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={form?.name}
+              onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
             />
           </div>
 
@@ -50,8 +56,9 @@ function NewProductForm() {
             <textarea
               id="description"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              name='description'
+              value={form?.description}
+              onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
               rows="3"
             ></textarea>
           </div>
@@ -65,8 +72,9 @@ function NewProductForm() {
               <select
                 id="category"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={form?.category}
+                name='category'
+                onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
               >
                 <option value="" disabled>
                   Selecione a Categoria
@@ -102,8 +110,9 @@ function NewProductForm() {
               <select
                 id="supplier"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
-                value={supplier}
-                onChange={(e) => setSupplier(e.target.value)}
+                value={form?.supplier}
+                name='supplier'
+                onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
               >
                 <option value="" disabled>
                   Selecione o Fornecedor
@@ -144,8 +153,8 @@ function NewProductForm() {
                 accept="image/*"
               />
               <div className="text-center">
-                {image ? (
-                  <img src={image} alt="Prévia da Imagem" className="max-h-40 mx-auto rounded-md" />
+                {form?.image ? (
+                  <img src={form?.image} alt="Prévia da Imagem" className="max-h-40 mx-auto rounded-md" />
                 ) : (
                   <>
                     <svg
@@ -174,6 +183,7 @@ function NewProductForm() {
 
           {/* Botão de Enviar */}
           <button
+          onSubmit={setDataForm}
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >

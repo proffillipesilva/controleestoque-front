@@ -14,7 +14,8 @@ function Modal({ isOpen, onClose, onSubmit, children, data, title = 'Modal Title
 
   const handleSubmitInternal = () => {
     if (onSubmit) {
-      onSubmit(data);
+      onSubmit();
+      onClose();
     }
   };
 
