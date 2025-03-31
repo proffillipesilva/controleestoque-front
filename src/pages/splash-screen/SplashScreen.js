@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import stockImage from '../../images/stock_control.webp'
+
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/auth/auth-slice';
+
 
 const SplashScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isFormVisible, setIsFormVisible] = useState(false);
+
+  const dispatch = useDispatch()
+  
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -17,11 +24,12 @@ const SplashScreen = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log('Email:', email);
     console.log('Password:', password);
+    dispatch(login({email,password}))
   };
 
   const showForm = () => {

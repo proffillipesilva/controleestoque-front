@@ -41,7 +41,7 @@ function ProductsPage() {
             4 active integrations for this organization
           </h2>
           <button onClick={() => setOpen(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            <FaPlus className="inline-block mr-2" /> Add Integration
+            <FaPlus className="inline-block mr-2" /> Adiciona Produto
           </button>
         </div>
 

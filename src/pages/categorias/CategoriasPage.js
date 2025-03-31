@@ -1,19 +1,16 @@
 import React from 'react';
 import {
-  FaBars,
-  FaCog,
-  FaPercentage,
-  FaBell,
-  FaUserCircle,
   FaPlus,
   FaSyncAlt,
   FaBan,
   FaTrashAlt,
 } from 'react-icons/fa';
 import { SiAsana, SiGithub, SiFresh, SiLinkedin } from 'react-icons/si';
+import PageTransition from '../../shared/components/PageTransition';
 
 function CategoriasPage() {
   return (
+    <PageTransition>
     <div className="bg-gray-100 min-h-screen font-sans">
       
 
@@ -36,7 +33,7 @@ function CategoriasPage() {
             4 active integrations for this organization
           </h2>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            <FaPlus className="inline-block mr-2" /> Add Integration
+            <FaPlus className="inline-block mr-2" /> Adiciona Categoria
           </button>
         </div>
 
@@ -184,6 +181,7 @@ function CategoriasPage() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }
 

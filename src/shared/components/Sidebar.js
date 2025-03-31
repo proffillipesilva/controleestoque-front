@@ -1,8 +1,7 @@
-import React, { Children, useState } from 'react';
+import React, { Children, useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBox,
-  faFolderOpen,
   faUsers,
   faUser,
   faHome,
@@ -14,31 +13,61 @@ import {
     FaPercentage,
     FaBell,
     FaUserCircle,
-    FaPlus,
-    FaSyncAlt,
-    FaBan,
-    FaTrashAlt,
+    FaSignOutAlt,
   } from 'react-icons/fa';
-  import { SiAsana, SiGithub, SiFresh, SiLinkedin } from 'react-icons/si';
+//  import { SiAsana, SiGithub, SiFresh, SiLinkedin } from 'react-icons/si';
 import '@fortawesome/fontawesome-svg-core/styles.css'; // Importe os estilos
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { logout } from '../../features/auth/auth-slice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 config.autoAddCss = false; // Desabilita a adição automática de CSS para evitar conflitos
 
 
 function Sidebar({children}) {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
-  const handleItemClick = (itemName) => {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const handleItemClick = (itemName, itemLink) => {
     setSelectedItem(itemName);
+    navigate("/estoque" + itemLink, {})
   };
+  
 
   const menuItems = [
-    { name: 'HOME', icon: faHome },
-    { name: 'PRODUTOS', icon: faBox },
-    { name: 'CATEGORIAS', icon: faThLarge },
-    { name: 'FORNECEDORES', icon: faUsers },
-    { name: 'USUÁRIOS', icon: faUser },
+    { name: 'HOME', icon: faHome, link: '/' },
+    { name: 'PRODUTOS', icon: faBox, link: '/produtos' },
+    { name: 'CATEGORIAS', icon: faThLarge, link: '/categorias' },
+    { name: 'FORNECEDORES', icon: faUsers, link: '/fornecedores' },
+    { name: 'USUÁRIOS', icon: faUser, link: '/usuarios' },
   ];
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setIsMenuOpen(false); // Close the menu after logout
+  };
+  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuRef]);
 
   return (
     <div>
@@ -55,7 +84,7 @@ function Sidebar({children}) {
           {menuItems.map((item) => (
             <li key={item.name} className="mb-0">
               <button
-                onClick={() => handleItemClick(item.name)}
+                onClick={() => handleItemClick(item.name, item.link)}
                 className={`flex items-center w-full py-4 px-4 mx-0 my-0 transition-colors duration-200 ${
                   selectedItem === item.name
                     ? 'bg-white text-gray-800 font-bold'
@@ -79,7 +108,7 @@ function Sidebar({children}) {
                   <button className="lg:hidden mr-4 focus:outline-none">
                     <FaBars className="text-gray-600 text-xl" />
                   </button>
-                  <h1 className="text-xl font-semibold text-gray-800">Epic Coders</h1>
+                  <h1 className="text-xl font-semibold text-gray-800">Controle de Estoque</h1>
                 </div>
                 <div className="flex items-center space-x-4">
                   <button className="hover:text-gray-700 focus:outline-none">
@@ -95,7 +124,7 @@ function Sidebar({children}) {
                     </span>
                   </button>
                   <div className="flex items-center">
-                    <FaUserCircle className="text-gray-600 text-2xl mr-2" />
+                    <FaUserCircle onClick={toggleMenu} className="text-gray-600 text-2xl mr-2" />
                     <span className="text-gray-700">Maria</span>
                     <svg
                       className="fill-current h-4 w-4 text-gray-500 ml-1"
@@ -107,6 +136,20 @@ function Sidebar({children}) {
                         clipRule="evenodd"
                       />
                     </svg>
+
+                    {isMenuOpen && (
+        <div
+          ref={menuRef}
+          className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10"
+        >
+          <div className="p-2">{"Test User"}</div>
+          <div
+            className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
+            onClick={handleLogout}
+          >
+            Logout <FaSignOutAlt className="ml-2" />
+          </div>
+        </div> )}
                   </div>
                 </div>
               </header>
