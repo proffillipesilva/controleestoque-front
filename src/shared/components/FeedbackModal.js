@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { hideFeedback } from '../../features/feedback/feedback-slice';
 import errorIcon from '../../images/icons8-error-symbol.json'
 import checkIcon from '../../images/icons8-check.json'
+import loadingImage from '../../images/loading-anim.json';
 import Lottie from 'lottie-react';
 
 const FeedbackModal = () => {
@@ -10,17 +11,31 @@ const FeedbackModal = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (show) {
+    if (show ) {
       const timer = setTimeout(() => {
-        dispatch(hideFeedback());
-      }, 500); // Hide after 3 seconds
+         dispatch(hideFeedback());
+      }, 1000); // Hide after 3 seconds
       return () => clearTimeout(timer);
     }
   }, [show, dispatch]);
 
-  if (!show) return null;
+  if(type === 'loading')
+    return(
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+    <Lottie animationData={loadingImage} loop={false} className="mx-auto h-16 w-16" />
+   
+      </div>
+    </div>
+    )
 
-  return (
+  else if (!show) return null;
+
+  
+  
+
+
+  else return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg">
         {type === 'success' && (
@@ -29,6 +44,7 @@ const FeedbackModal = () => {
         {type === 'error' && (
           <Lottie animationData={errorIcon}  loop={false} className="mx-auto h-16 w-16" />
         )}
+       
         <p className="mt-4 text-center">{message}</p>
       </div>
     </div>

@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance from '../../shared/utils/axios-config';
+import apiServices from '../../api/api-services';
 
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post('/auth/login', credentials);
-      const token = response.data.token;
+      const response = await apiServices.auth.login(credentials)
+      const token = response.token;
       localStorage.setItem('token', token);
       return token;
     } catch (error) {
@@ -17,7 +17,7 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
-    await axiosInstance.delete('/auth/logout');
+    await apiServices.auth.logout();
     localStorage.removeItem('token');
     return null;
   } catch (error) {

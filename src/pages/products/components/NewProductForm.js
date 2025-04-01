@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 
 function NewProductForm({currentData, setDataForm}) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [supplier, setSupplier] = useState('');
-  const [image, setImage] = useState(null);
-
-
-  const [form, setForm] = useState(currentData);
 
   const categories = ['Eletrônicos', 'Vestuário', 'Alimentos', 'Livros', 'Outros'];
   const suppliers = ['Fornecedor A', 'Fornecedor B', 'Fornecedor C', 'Fornecedor D'];
@@ -16,23 +8,17 @@ function NewProductForm({currentData, setDataForm}) {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
-      setForm({...form, image: image})
+      setDataForm({...currentData, image: URL.createObjectURL(file)})
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Aqui você pode adicionar a lógica para enviar os dados do formulário
-    console.log({ name, description, category, supplier, image });
-    setDataForm(form)
-  };
+ 
 
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
+    <div className="bg-gray-100 h-3/4 p-6">
       <div className="bg-white shadow-md rounded-md p-8 max-w-md mx-auto">
         <h2 className="text-xl font-semibold mb-6 text-gray-800">NOVO PRODUTO</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form  className="space-y-4">
           {/* Nome */}
           <div>
             <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
@@ -41,10 +27,10 @@ function NewProductForm({currentData, setDataForm}) {
             <input
               type="text"
               id="name"
-              name='name'
+              name='nome'
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={form?.name}
-              onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
+              value={currentData?.name}
+              onChange={(e) => setDataForm({...currentData, [e.target.name]: e.target.value })}
             />
           </div>
 
@@ -56,9 +42,9 @@ function NewProductForm({currentData, setDataForm}) {
             <textarea
               id="description"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              name='description'
-              value={form?.description}
-              onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
+              name='descricao'
+              value={currentData?.description}
+              onChange={(e) => setDataForm({...currentData, [e.target.name]: e.target.value })}
               rows="3"
             ></textarea>
           </div>
@@ -72,9 +58,9 @@ function NewProductForm({currentData, setDataForm}) {
               <select
                 id="category"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
-                value={form?.category}
-                name='category'
-                onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
+                value={currentData?.category}
+                name='categoria'
+                onChange={(e) => setDataForm({...currentData, [e.target.name]: e.target.value })}
               >
                 <option value="" disabled>
                   Selecione a Categoria
@@ -110,9 +96,9 @@ function NewProductForm({currentData, setDataForm}) {
               <select
                 id="supplier"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
-                value={form?.supplier}
-                name='supplier'
-                onChange={(e) => setForm({...form, [e.target.name]: e.target.value })}
+                value={currentData?.supplier}
+                name='fornecedor'
+                onChange={(e) => setDataForm({...currentData, [e.target.name]: e.target.value })}
               >
                 <option value="" disabled>
                   Selecione o Fornecedor
@@ -153,8 +139,8 @@ function NewProductForm({currentData, setDataForm}) {
                 accept="image/*"
               />
               <div className="text-center">
-                {form?.image ? (
-                  <img src={form?.image} alt="Prévia da Imagem" className="max-h-40 mx-auto rounded-md" />
+                {currentData?.image ? (
+                  <img src={currentData?.image} alt="Prévia da Imagem" className="max-h-40 mx-auto rounded-md" />
                 ) : (
                   <>
                     <svg
@@ -180,15 +166,7 @@ function NewProductForm({currentData, setDataForm}) {
             </div>
             <p className="text-xs text-gray-500 mt-1">Formatos aceitos: JPG, PNG, GIF.</p>
           </div>
-
-          {/* Botão de Enviar */}
-          <button
-          onSubmit={setDataForm}
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Salvar Produto
-          </button>
+         
         </form>
       </div>
     </div>

@@ -37,7 +37,7 @@ function Modal({ isOpen, onClose, onSubmit, children, data, title = 'Modal Title
         </div>
 
         {/* Body */}
-        <div className="p-6">
+        <div className="p-6 h-2/4">
           {children}
         </div>
 

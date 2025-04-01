@@ -16,6 +16,7 @@ const feedbackSlice = createSlice({
     },
     hideFeedback: (state) => {
       state.show = false;
+      state.type = null
     },
   },
 });

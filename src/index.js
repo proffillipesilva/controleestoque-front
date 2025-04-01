@@ -7,18 +7,17 @@ import store from './features/store';
 import { Provider } from 'react-redux';
 import { injectMethods, injectStore } from './shared/utils/axios-config';
 import { logout } from './features/auth/auth-slice';
-import { showFeedback } from './features/feedback/feedback-slice';
+import { showFeedback, hideFeedback } from './features/feedback/feedback-slice';
 
 injectStore(store)
-injectMethods(logout, showFeedback)
-
+injectMethods(logout, showFeedback, hideFeedback)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-  <React.StrictMode>
+ 
     <App />
-  </React.StrictMode>
+ 
   </Provider>
 );
 

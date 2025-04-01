@@ -1,17 +1,18 @@
 import axios from 'axios';
 
-
 let store
 let logout
 let showFeedback
+let hideFeedback
 
 export const injectStore = _store => {
   store = _store
 }
 
-export const injectMethods = (_logout, _showFeedback) => {
+export const injectMethods = (_logout, _showFeedback, _hideFeedback) => {
     logout = _logout
     showFeedback = _showFeedback
+    hideFeedback = _hideFeedback
   }
   
 
@@ -22,7 +23,13 @@ axiosInstance.defaults.baseURL = 'http://localhost:8080'; // Replace with your A
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    console.log(config)
+    store.dispatch(
+        showFeedback({
+          type: 'loading',
+          message: 'Loading...',
+          show: false,
+        })
+      );
     const token = store.getState().auth.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -36,7 +43,7 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
     (response) => {
-        console.log(response)
+       
       if (response.status >= 200 && response.status < 400) {
         store.dispatch(
           showFeedback({

@@ -9,6 +9,7 @@ import ProductsPage from './pages/products/ProductsPage';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import FeedbackModal from './shared/components/FeedbackModal';
+import HomePage from './pages/home-page/HomePage';
 
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
           element={token ?
             <Sidebar >
               <Routes >
-                <Route index element={<CategoriasPage />} />
+                <Route index element={<HomePage />} />
                 <Route path='/categorias' element={<CategoriasPage />} />
                 <Route path='/produtos' element={<ProductsPage />} />
                 <Route path='/produtos/:id' element={<ProductDetails />} />

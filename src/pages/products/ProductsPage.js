@@ -188,7 +188,7 @@ function ProductsPage() {
           </table>
         </div>
         <Modal isOpen={open} onClose={() => setOpen(false)} onSubmit={() => console.log(form)} >
-        <NewProductForm currentData={form} setDataForm={(form) => {setForm(form); console.log(form)}} />
+        <NewProductForm currentData={form} setDataForm={setForm} />
         </Modal>
       </div>
     </div>
