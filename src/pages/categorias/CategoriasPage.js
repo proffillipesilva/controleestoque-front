@@ -41,7 +41,7 @@ function CategoriasPage() {
 
 
   return (
-    <PageTransition>
+   
     <div className="bg-gray-100 min-h-screen font-sans">
       
 
@@ -139,7 +139,6 @@ function CategoriasPage() {
         <NewCategoriaForm currentData={form} setDataForm={(form) => {setForm(form);}} />
         </Modal>
     </div>
-    </PageTransition>
   );
 }
 

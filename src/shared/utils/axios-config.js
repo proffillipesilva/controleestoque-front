@@ -23,6 +23,7 @@ axiosInstance.defaults.baseURL = 'http://localhost:8080'; // Replace with your A
 
 axiosInstance.interceptors.request.use(
   (config) => {
+   
     store.dispatch(
         showFeedback({
           type: 'loading',
@@ -30,6 +31,7 @@ axiosInstance.interceptors.request.use(
           show: false,
         })
       );
+    
     const token = store.getState().auth.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -45,13 +47,24 @@ axiosInstance.interceptors.response.use(
     (response) => {
        
       if (response.status >= 200 && response.status < 400) {
-        store.dispatch(
-          showFeedback({
-            type: 'success',
-            message: 'Operation successful!',
-            show: true,
-          })
-        );
+        if(response.config.method !== "get"){
+          store.dispatch(
+            showFeedback({
+              type: 'success',
+              message: 'Operation successful!',
+              show: true,
+            })
+          );
+        } else {
+          store.dispatch(
+            showFeedback({
+              type: '',
+              message: '',
+              show: false,
+            })
+          );
+        }
+       
       }
       return response;
     },
