@@ -101,7 +101,7 @@ function CategoriasPage() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {categorias?.map(c => { 
-                const Icon = c?.icon != null ? reactIcons[c.icon] : <></> 
+                const Icon = c?.icon != null ? reactIcons[c.icon] : "FaPlus"
                 return(
               <tr key={c.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
