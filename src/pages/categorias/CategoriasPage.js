@@ -20,6 +20,25 @@ function CategoriasPage() {
 
     const [categorias, setCategorias] = useState([])
 
+    const handleChange = (event) => {
+      const { name, value } = event.target;
+      if (name.startsWith('endereco.')) {
+        const enderecoField = name.split('.')[1];
+        setForm((prevFornecedor) => ({
+          ...prevFornecedor,
+          endereco: {
+            ...prevFornecedor.endereco,
+            [enderecoField]: value,
+          },
+        }));
+      } else {
+        setForm((prevFornecedor) => ({
+          ...prevFornecedor,
+          [name]: value,
+        }));
+      }
+    };
+
 
     const carregaCategorias = async() => {
       const categoriasResponse = await apiServices.categoria.getCategorias();
@@ -136,7 +155,7 @@ function CategoriasPage() {
         </div>
       </div>
       <Modal isOpen={open} onClose={() => setOpen(false)} onSubmit={handleSubmit} >
-        <NewCategoriaForm currentData={form} setDataForm={(form) => {setForm(form);}} />
+        <NewCategoriaForm currentData={form} setDataForm={handleChange} />
         </Modal>
     </div>
   );

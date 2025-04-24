@@ -13,10 +13,20 @@ import {
 import { SiAsana, SiGithub, SiFresh, SiLinkedin } from 'react-icons/si';
 import Modal from '../../shared/components/Modal';
 import NewProductForm from './components/NewProductForm';
+import apiServices from '../../api/api-services';
 
 function ProductsPage() {
   const [form, setForm] = useState({})
   const [open, setOpen] = useState(false)
+
+  const handleSubmit = async () => {
+    const f = new FormData()
+    f.append("produto", JSON.stringify(form))
+    f.append("image", form.image)
+    console.log(f);
+    apiServices.produto.createProduto(f)
+  
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
@@ -187,7 +197,7 @@ function ProductsPage() {
             </tbody>
           </table>
         </div>
-        <Modal isOpen={open} onClose={() => setOpen(false)} onSubmit={() => console.log(form)} >
+        <Modal isOpen={open} onClose={() => setOpen(false)} onSubmit={handleSubmit} >
         <NewProductForm currentData={form} setDataForm={setForm} />
         </Modal>
       </div>

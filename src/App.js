@@ -10,6 +10,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import { useSelector } from 'react-redux';
 import FeedbackModal from './shared/components/FeedbackModal';
 import HomePage from './pages/home-page/HomePage';
+import FornecedoresPage from './pages/fornecedores/FornecedoresPage';
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
               <Routes >
                 <Route index element={<HomePage />} />
                 <Route path='/categorias' element={<CategoriasPage />} />
+                <Route path='/fornecedores' element={<FornecedoresPage />} />
                 <Route path='/produtos' element={<ProductsPage />} />
                 <Route path='/produtos/:id' element={<ProductDetails />} />
                 <Route path='*' element={<CategoriasPage />} />

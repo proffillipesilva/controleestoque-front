@@ -1,16 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import fornecedorService from '../../../api/fornecedor-service';
+import categoriaService from '../../../api/categoria-service';
 
 function NewProductForm({currentData, setDataForm}) {
 
-  const categories = ['Eletrônicos', 'Vestuário', 'Alimentos', 'Livros', 'Outros'];
-  const suppliers = ['Fornecedor A', 'Fornecedor B', 'Fornecedor C', 'Fornecedor D'];
+  const [categories, setCategories] = useState([])
+  const [suppliers, setSuppliers] =useState([])
+
+  const loadDropdowns = async () => {
+    const sup = await fornecedorService.getFornecedores();
+    const cat = await categoriaService.getCategorias();
+
+    setCategories(cat);
+    setSuppliers(sup)
+  }
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setDataForm({...currentData, image: URL.createObjectURL(file)})
+      //setDataForm({...currentData, image: URL.createObjectURL(file)})
+      setDataForm({...currentData, image: file})
     }
   };
+
+
+
+  useEffect(() => {
+    loadDropdowns();
+  
+    
+  }, [])
+  
 
  
 
@@ -67,7 +87,7 @@ function NewProductForm({currentData, setDataForm}) {
                 </option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
-                    {cat}
+                    {cat.nome}
                   </option>
                 ))}
               </select>
@@ -105,7 +125,7 @@ function NewProductForm({currentData, setDataForm}) {
                 </option>
                 {suppliers.map((sup) => (
                   <option key={sup} value={sup}>
-                    {sup}
+                    {sup.nome} - {sup.cnpj}
                   </option>
                 ))}
               </select>
